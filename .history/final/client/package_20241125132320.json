@@ -7,6 +7,7 @@
     "@emotion/css": "^11.10.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@types/enzyme": "^3.10.18",
     "graphql": "^16.5.0",
     "history": "^5.3.0",
     "polished": "^4.2.2",
@@ -24,8 +25,7 @@
     "eject": "react-scripts eject",
     "run:ios-demo": "npx artillery run apollo-internal-demos/ios-workload.yml",
     "codegen": "apollo client:codegen --target typescript --watch",
-    "test:selenium": "node src/pages/selenium_test/profile_item.seleniumtest.js"
-
+    "test:selenium": "node F:/soft-v-proj/cpsc542-grp-proj/final/client/src/pages/__tests__/profile_item.test.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,6 +37,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@cfaester/enzyme-adapter-react-18": "^0.8.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.1.1",
@@ -46,6 +47,7 @@
     "@types/react-router": "^5.1.19",
     "artillery": "^2.0.0-23",
     "chromedriver": "^129.0.4",
+    "enzyme": "^3.11.0",
     "npm-watch": "^0.11.0",
     "selenium-webdriver": "^4.25.0"
   }

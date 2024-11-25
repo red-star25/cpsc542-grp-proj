@@ -24,8 +24,7 @@
     "eject": "react-scripts eject",
     "run:ios-demo": "npx artillery run apollo-internal-demos/ios-workload.yml",
     "codegen": "apollo client:codegen --target typescript --watch",
-    "test:selenium": "node src/pages/selenium_test/profile_item.seleniumtest.js"
-
+    "test:selenium": "node client/src/pages/selenium_test/profile_item.seleniumtest.js"
   },
   "eslintConfig": {
     "extends": "react-app"

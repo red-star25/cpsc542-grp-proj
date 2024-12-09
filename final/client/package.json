@@ -24,8 +24,7 @@
     "eject": "react-scripts eject",
     "run:ios-demo": "npx artillery run apollo-internal-demos/ios-workload.yml",
     "codegen": "apollo client:codegen --target typescript --watch",
-    "test:selenium": "node src/pages/selenium_test/profile_item.seleniumtest.js"
-
+    "test:selenium": "node src/pages/selenium_test/removeFromCart.seleniumtest.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,6 +46,6 @@
     "artillery": "^2.0.0-23",
     "chromedriver": "^129.0.4",
     "npm-watch": "^0.11.0",
-    "selenium-webdriver": "^4.25.0"
+    "selenium-webdriver": "^4.27.0"
   }
 }

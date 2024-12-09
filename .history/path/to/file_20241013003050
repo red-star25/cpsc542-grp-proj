@@ -1,6 +1,0 @@
-// final/client/src/pages/__tests__/example.test.js
-const { Builder, until } = require("selenium-webdriver");
-
-// Increase the timeout duration
-const TIMEOUT = 5000; // 5 seconds
-

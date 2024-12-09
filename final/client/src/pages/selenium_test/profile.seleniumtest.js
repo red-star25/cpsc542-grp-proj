@@ -7,9 +7,12 @@ const TIMEOUT = 2000;
 (async function profileFormTest() {
   let driver = await new Builder().forBrowser("chrome").build();
   await login(driver);
+  await driver.sleep(TIMEOUT);
+
   try {
-    // Navigate to the page containing the ProfileForm without .get 
-    
+    // Navigate to the page containing the ProfileForm without .get
+    await driver.get("http://localhost:3000/profile");
+    await driver.sleep(TIMEOUT);
 
     try {
       await driver.wait(until.elementLocated(By.css("h2")), TIMEOUT);

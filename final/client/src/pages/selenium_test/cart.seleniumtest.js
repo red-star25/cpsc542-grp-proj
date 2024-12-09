@@ -6,7 +6,7 @@ options.addArguments("--ignore-certificate-errors");
 options.addArguments("--disable-web-security");
 options.addArguments("--allow-insecure-localhost");
 
-const TIMEOUT = 30000; // Increased timeout to account for delays
+const TIMEOUT = 30000; // Timeout for waiting operations
 
 (async function cartPageTest() {
   let driver = await new Builder()
@@ -15,7 +15,7 @@ const TIMEOUT = 30000; // Increased timeout to account for delays
     .build();
 
   try {
-    //Navigate to the login page
+    // Navigate to the login page
     await driver.get("http://localhost:3000");
     console.log("Login page loaded.");
     const emailInput = await driver.findElement(By.css('input[name="email"]'));
@@ -24,53 +24,47 @@ const TIMEOUT = 30000; // Increased timeout to account for delays
     await loginButton.click();
     console.log("Login submitted.");
 
-   
-    //Wait for user to navigate to item details page
-    console.log("Please navigate to the item details page manually.");
-    await driver.wait(
-      until.urlMatches(/\/launch\/\d+$/), 
-      TIMEOUT, 
-      "User must navigate to the item details page."
-    );
-    console.log("User navigated to the item details page.");
-
-    // Wait for "Add to Cart" button interaction
-    console.log("Please click 'Add to Cart' manually.");
-    const addToCartButton = await driver.wait(
-      until.elementLocated(By.css('[data-testid="action-button"]')), 
+    //  Navigate to the first available item details page
+    console.log("Navigating to the first item details page...");
+    const firstItem = await driver.wait(
+      until.elementLocated(By.css('a[href^="/launch/"]')), // Selects the first item link
       TIMEOUT
     );
-    await driver.wait(until.elementIsVisible(addToCartButton), TIMEOUT);
-    console.log("Waiting for 'Remove from Cart' state...");
+    await firstItem.click();
+    console.log("Navigated to the item details page.");
 
-    // Check if the button text changes dynamically
+    //  Add item to the cart
+    console.log("Adding item to the cart...");
+    const addToCartButton = await driver.wait(
+      until.elementLocated(By.css('[data-testid="action-button"]')), // Finds the "Add to Cart" button
+      TIMEOUT
+    );
+
+    // Scroll to the button and click
+    await driver.executeScript("arguments[0].scrollIntoView(true);", addToCartButton);
+    await driver.wait(until.elementIsVisible(addToCartButton), TIMEOUT);
+    await addToCartButton.click();
+    console.log("Clicked 'Add to Cart' button.");
+
+    // Verify the button text changes to "Remove from Cart"
     await driver.wait(async () => {
       const buttonText = await addToCartButton.getText();
       return buttonText.toLowerCase() === "remove from cart";
     }, TIMEOUT);
     console.log("Item successfully added to the cart.");
 
-    //Handle "Remove from Cart" interaction manually
-    console.log("You may remove the item from the cart now, later, or even after logging out.");
-    while (true) {
-      try {
-        const removeFromCartButton = await driver.wait(
-          until.elementLocated(By.css('[data-testid="action-button"]')), 
-          TIMEOUT
-        );
-        await driver.wait(until.elementIsVisible(removeFromCartButton), TIMEOUT);
+    //Remove item from the cart
+    console.log("Removing item from the cart...");
+    await addToCartButton.click(); // Clicks the same button to remove the item
 
-        // Check if button text changes back to "Add to Cart"
-        const buttonText = await removeFromCartButton.getText();
-        if (buttonText.toLowerCase() === "add to cart") {
-          console.log("Item successfully removed from the cart.");
-          break;
-        }
-      } catch {
-        console.log("Waiting for user to remove the item... Checking again in 5 seconds.");
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-      }
-    }
+    // Verify the button text changes back to "Add to Cart"
+    await driver.wait(async () => {
+      const buttonText = await addToCartButton.getText();
+      return buttonText.toLowerCase() === "add to cart";
+    }, TIMEOUT);
+    console.log("Item successfully removed from the cart.");
+
+    console.log("TEST PASSED: All actions completed successfully.");
   } catch (error) {
     console.error("Test Failed:", error);
 
@@ -78,8 +72,7 @@ const TIMEOUT = 30000; // Increased timeout to account for delays
     const pageSource = await driver.getPageSource();
     console.log("Page Source at failure:\n", pageSource);
   } finally {
-    console.log("TEST PASSED & complete. Browser will remain open for manual inspection.");
-    
+    console.log("Test complete. Closing browser...");
+    await driver.quit();
   }
 })();
-//

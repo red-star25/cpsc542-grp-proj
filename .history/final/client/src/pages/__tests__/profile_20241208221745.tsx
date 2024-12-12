@@ -1,5 +1,6 @@
+import React from 'react';
 
-import { cleanup, renderApollo, waitFor } from '../../test-utils';
+import { renderApollo, cleanup, waitFor } from '../../test-utils';
 import Profile, { GET_MY_TRIPS } from '../profile';
 
 const mockLaunch = {

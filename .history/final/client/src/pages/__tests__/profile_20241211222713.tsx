@@ -1,5 +1,5 @@
-
-import { cleanup, renderApollo, waitFor } from '../../test-utils';
+import { MockedProvider } from '@apollo/client/testing';
+import { cleanup, render, waitFor } from '@testing-library/react';
 import Profile, { GET_MY_TRIPS } from '../profile';
 
 const mockLaunch = {
@@ -27,10 +27,11 @@ const mockMe = {
 };
 
 describe('Profile Page', () => {
-  // automatically unmount and cleanup DOM after the test is finished.
+  // Automatically unmount and cleanup DOM after each test.
   afterEach(cleanup);
 
   it('renders profile page', async () => {
+    // Mock the Apollo GraphQL query.
     const mocks = [
       {
         request: { query: GET_MY_TRIPS },
@@ -38,9 +39,14 @@ describe('Profile Page', () => {
       },
     ];
 
-    const { getByText } = renderApollo(<Profile />, { mocks });
+    // Render the Profile component with the mocked Apollo provider.
+    const { getByText } = render(
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <Profile />
+      </MockedProvider>
+    );
 
-    // if the profile renders, it will have the list of missions booked
+    // Wait for the profile page to render and check if the test mission is displayed.
     await waitFor(() => getByText(/test mission/i));
   });
 });

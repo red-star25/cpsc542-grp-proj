@@ -1,3 +1,4 @@
+
 import { Route, Routes } from 'react-router-dom';
 import { cleanup, renderApollo, waitFor } from '../../test-utils';
 import Launch, { GET_LAUNCH_DETAILS } from '../launch';
@@ -23,11 +24,10 @@ const mockLaunch = {
 };
 
 describe('Launch Page', () => {
-  // Automatically unmount and cleanup DOM after each test.
+  // automatically unmount and cleanup DOM after the test is finished.
   afterEach(cleanup);
 
-  it('renders launch details', async () => {
-    // Define the mock request and response data.
+  it('renders launch', async () => {
     const mocks = [
       {
         request: { query: GET_LAUNCH_DETAILS, variables: { launchId: '1' } },
@@ -35,10 +35,8 @@ describe('Launch Page', () => {
       },
     ];
 
-    // Define the history object with the desired URL.
     const history = ['/launch/1'];
 
-    // Render the Launch component with Apollo Provider and Router.
     const { getByText } = await renderApollo(
       <Routes>
         <Route path="launch/:launchId" element={<Launch />} />
@@ -50,7 +48,6 @@ describe('Launch Page', () => {
       },
     );
 
-    // Wait for the launch details to be rendered and assert the presence of the mission name.
     await waitFor(() => getByText(/test mission/i));
   });
 });

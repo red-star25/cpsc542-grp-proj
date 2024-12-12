@@ -1,4 +1,3 @@
-
 import { cache, isLoggedInVar } from '../../cache';
 import { cleanup, fireEvent, renderApollo, waitFor } from '../../test-utils';
 import Login, { LOGIN_USER } from '../login';
@@ -7,11 +6,12 @@ describe('Login Page', () => {
   // Automatically unmount and cleanup DOM after each test
   afterEach(cleanup);
 
-  it('should render the login page', async () => {
+  it('renders the login page', async () => {
+    // Render the Login component
     renderApollo(<Login />);
   });
 
-  it('should fire the login mutation and update the cache when done', async () => {
+  it('fires the login mutation and updates the cache when done', async () => {
     // Ensure the user is initially logged out
     expect(isLoggedInVar()).toBeFalsy();
 
@@ -44,8 +44,8 @@ describe('Login Page', () => {
     // Simulate a click on the login button
     fireEvent.click(getByText(/log in/i));
 
-    // Wait for the login to complete by checking if the login button is still visible
-    await waitFor(() => getByText(/log in/i));
+    // Wait for the login to complete by checking if the login button is no longer visible
+    await waitFor(() => expect(getByText(/log in/i)).not.toBeInTheDocument());
 
     // Ensure the user is now logged in
     expect(isLoggedInVar()).toBeTruthy();

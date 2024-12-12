@@ -1,6 +1,7 @@
+import React from 'react';
 import { InMemoryCache } from '@apollo/client';
 
-import { cleanup, renderApollo, waitFor } from '../../test-utils';
+import { renderApollo, cleanup, waitFor } from '../../test-utils';
 import Launches, { GET_LAUNCHES } from '../launches';
 
 const mockLaunch = {
@@ -24,14 +25,11 @@ const mockLaunch = {
 };
 
 describe('Launches Page', () => {
-  // Automatically unmount and cleanup DOM after each test.
+  // automatically unmount and cleanup DOM after the test is finished.
   afterEach(cleanup);
 
   it('renders launches', async () => {
-    // Create a new instance of InMemoryCache with addTypename set to false.
     const cache = new InMemoryCache({ addTypename: false });
-
-    // Define the mock request and result for the Apollo client.
     const mocks = [
       {
         request: { query: GET_LAUNCHES },
@@ -46,14 +44,10 @@ describe('Launches Page', () => {
         },
       },
     ];
-
-    // Render the Launches component with Apollo client mocks and cache.
     const { getByText } = await renderApollo(<Launches />, {
       mocks,
       cache,
     });
-
-    // Wait for the component to render and the specified text to be present.
     await waitFor(() => getByText(/test mission/i));
   });
 });

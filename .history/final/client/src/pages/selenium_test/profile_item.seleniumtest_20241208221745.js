@@ -1,3 +1,4 @@
+// test/profileForm.test.js
 const { Builder, By, until } = require("selenium-webdriver");
 const assert = require("assert");
 
@@ -100,7 +101,7 @@ async function cancelTrip(driver) {
   await profile.click();
 
   try {
-    // const noTrip = await driver.findElement(By.css("p")).getText();
+    const noTrip = await driver.findElement(By.css("p")).getText();
     // assert.strictEqual(noTrip, "You haven't booked any trips");
     console.log("Test Passed: Cancel Trip Functionality Working.");
     await driver.quit();
